@@ -136,3 +136,10 @@ h2 {
 p {
   line-height: 1.6;
 }
+
+/* Nome utente nella Navbar */
+.user_name {
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
+}
