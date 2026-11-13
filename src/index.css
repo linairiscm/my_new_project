@@ -24,6 +24,9 @@ h1 {
   gap: 35px;
   padding: 22px;
   background-color: #1e293b;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .navbar a {
@@ -142,4 +145,13 @@ p {
   color: white;
   font-size: 17px;
   font-weight: bold;
+}
+
+/* Navbar con custom hook useScroll */
+.navbar.light_navbar {
+  background-color: #1e293b;
+}
+
+.navbar.dark_navbar {
+  background-color: #0f172a;
 }
