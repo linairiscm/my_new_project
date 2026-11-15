@@ -1,29 +1,26 @@
-import { useContext, useState } from "react";
-import { UserContext } from "../context/UserContext";
+
+import { useContext } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
+import { UserContext } from "../context/UserContext";
 
 export default function Register() {
-  const { register } = useContext(UserContext);
+  const { register: registerUser } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const [userName, setUserName] = useState();
-  const [userEmail, setUserEmail] = useState();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const handleChange = (e) => {
-    if (e.target.id === "name") {
-      setUserName(e.target.value);
-    } else if (e.target.id === "email") {
-      setUserEmail(e.target.value);
-    }
-  };
+  const handleRegister = (data) => {
+    registerUser({
+      name: data.username,
+      email: data.email,
+    });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (userName && userEmail) {
-      register({ name: userName, email: userEmail });
-      navigate("/");
-    }
+    navigate("/");
   };
 
   return (
@@ -34,31 +31,67 @@ export default function Register() {
             Registrazione
           </h1>
 
-          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-            <label htmlFor="name">Nome:</label>
+          <form
+            className="flex flex-col gap-4"
+            onSubmit={handleSubmit(handleRegister)}
+            noValidate
+          >
+            <label htmlFor="username">Nome:</label>
             <input
               type="text"
-              id="name"
+              id="username"
               className="input w-full"
-              onChange={handleChange}
-              required
+              {...register("username", {
+                required: "Il nome è obbligatorio",
+                maxLength: {
+                  value: 50,
+                  message: "Massimo 50 caratteri",
+                },
+              })}
             />
+            {errors.username && (
+              <p className="text-sm text-red-500">
+                {errors.username.message}
+              </p>
+            )}
 
             <label htmlFor="email">Email:</label>
             <input
               type="email"
               id="email"
               className="input w-full"
-              onChange={handleChange}
-              required
+              {...register("email", {
+                required: "L'email è obbligatoria",
+                maxLength: {
+                  value: 50,
+                  message: "Massimo 50 caratteri",
+                },
+              })}
             />
+            {errors.email && (
+              <p className="text-sm text-red-500">
+                {errors.email.message}
+              </p>
+            )}
 
             <label htmlFor="password">Password:</label>
             <input
               type="password"
               id="password"
               className="input w-full"
+              {...register("password", {
+                required: "La password è obbligatoria",
+                maxLength: {
+                  value: 50,
+                  message: "Massimo 50 caratteri",
+                },
+              })}
             />
+            {errors.password && (
+              <p className="text-sm text-red-500">
+                {errors.password.message}
+              </p>
+            )}
 
             <button type="submit" className="btn btn-primary mt-4">
               Registrati

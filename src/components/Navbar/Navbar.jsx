@@ -1,12 +1,19 @@
+
 import { useContext } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { UserContext } from "../../context/UserContext";
 import useScroll from "../../hooks/useScroll";
 import styles from "./Navbar.module.css";
 
 export default function Navbar() {
-  const { user } = useContext(UserContext);
+  const { user, logout } = useContext(UserContext);
   const [scrolled, scrollY] = useScroll();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   return (
     <nav
@@ -36,9 +43,19 @@ export default function Navbar() {
       )}
 
       {user && (
-        <span className="font-semibold text-blue-200">
-          {user.name}
-        </span>
+        <>
+          <span className="font-semibold text-white">
+            Welcome, {user.name}
+          </span>
+
+          <button
+            type="button"
+            className="btn btn-sm btn-outline border-white text-white"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+        </>
       )}
     </nav>
   );
